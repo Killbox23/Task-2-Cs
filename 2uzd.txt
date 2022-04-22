@@ -1,0 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Numerics;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //testing
+            //         10
+            //    /          \
+            //  2            100
+            // /            / | \
+            //77           7  8  9
+            //            /  / \
+            //           6  45  12
+            //              /
+            //             13
+            Node root = NewNode(10);
+            (root.leaf).Add(NewNode(2));
+            //(root.leaf).Add(NewNode(34));
+            //(root.leaf).Add(NewNode(56));
+            (root.leaf).Add(NewNode(100));
+            (root.leaf[0].leaf).Add(NewNode(77));
+            ////(root.leaf[0].leaf[0].leaf).Add(NewNode(88));
+            (root.leaf[1].leaf).Add(NewNode(7));
+            (root.leaf[1].leaf).Add(NewNode(8));
+            (root.leaf[1].leaf).Add(NewNode(9));
+            (root.leaf[1].leaf[0].leaf).Add(NewNode(6));
+            (root.leaf[1].leaf[1].leaf).Add(NewNode(45));
+            (root.leaf[1].leaf[1].leaf).Add(NewNode(12));
+            (root.leaf[1].leaf[1].leaf[0].leaf).Add(NewNode(13));
+            //(root.leaf[2].leaf).Add(NewNode(1));
+            //(root.leaf[3].leaf).Add(NewNode(7));
+            //(root.leaf[3].leaf).Add(NewNode(8));
+            //(root.leaf[3].leaf).Add(NewNode(9));
+            Console.WriteLine(Height(root));
+        }
+        public class Node
+        {
+            public int key;
+            public List<Node> leaf = new List<Node>();
+        }
+        static Node NewNode(int key)
+        {
+            Node temp = new Node();
+            temp.key = key;
+            return temp;
+        }
+        static int Height(Node root)
+        {
+            if (root.leaf == null)//if there are no leafs we go back
+            {
+                return 1;
+            }
+            var maxHeight = 0;//creating a variable to save max height
+
+            foreach (var child in root.leaf)// walk through every leaf
+            {
+                var childHeight = Height(child);// call leaf to get height with recursion
+
+                if (maxHeight < childHeight)// when we are returning to root compare height
+                {
+                    maxHeight = childHeight;
+                }
+            }            
+            maxHeight++;//count height
+            return maxHeight;// returning back to root
+        }
+    }
+}
